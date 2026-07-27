@@ -1,0 +1,4 @@
+{
+  "name": "Store Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu"
+}

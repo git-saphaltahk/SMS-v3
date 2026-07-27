@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+     context: .
+     dockerfile: Dockerfile
+     target: backend-build #build only backend stage
+    container_name: store-mvp-backend
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=h2
+    restart: unless-stopped
+
+  frontend:
+    build: 
+     context: .
+     dockerfile: Dockerfile
+     target: frontend-build #build only frontend stage
+    container_name: store-mvp-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+
+  # Production setup with MySQL (uncomment for real deployment)
+  # app:
+  #   build: .
+  #   ports:
+  #     - "8082:8082"
+  #   environment:
+  #     - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/mystore?createDatabaseIfNotExist=true
+  #     - SPRING_DATASOURCE_USERNAME=root
+  #     - SPRING_DATASOURCE_PASSWORD=miracle2024
+  #     - SPRING_PROFILES_ACTIVE=prod
+  #   depends_on:
+  #     - db
+  #   restart: unless-stopped
+  #
+  # db:
+  #   image: mysql:8.0
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=miracle2024
+  #     - MYSQL_DATABASE=mystore
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #
+  # volumes:
+  #   mysql_data:
